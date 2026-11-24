@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="ms">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard DELIMa</title>
+<link rel="icon" href="assets/logo.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<style>
+/* Susun atur: navigasi sisi 13 bahagian + kandungan utama; jalur biru tua di atas. Biru dan putih. */
+:root {
+  --bg: #F3F7FC; --surface: #FFFFFF; --surface-2: #F7FAFE; --ink: #0E2240; --muted: #586B87; --line: #D6E2F2;
+  --blue: #1559C2; --blue-soft: #E4EEFC; --btn-bg: #1559C2; --btn-ink: #FFFFFF;
+  --hero: #0A3A8C; --hero-ink: #FFFFFF; --hero-muted: #BBD1F6;
+  --font-head: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0B1524; --surface: #122039; --surface-2: #0F1B31; --ink: #E7EFFB; --muted: #9DB1CF; --line: #23395C;
+    --blue: #7DB0F8; --blue-soft: #1A3159; --btn-bg: #5B9BF5; --btn-ink: #08142A; --hero: #0F2A57; --hero-muted: #A9C2EA;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.55; }
+h1, h2, h3, p { margin: 0; }
+a { color: inherit; }
+:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; border-radius: 4px; }
+.wrap { max-width: 1120px; margin-inline: auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+.hero { background: var(--hero); color: var(--hero-ink); padding-block: 34px 30px; }
+.hero-in { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; }
+.logo { width: 96px; height: 96px; flex: none; border-radius: 18px; background: #000; border: 2px solid rgba(255,255,255,0.35); }
+.hero-text { display: flex; flex-direction: column; gap: 6px; min-width: 0; flex: 1 1 320px; }
+.eyebrow { font-family: var(--font-head); font-size: 13px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--hero-muted); }
+.hero h1 { font-family: var(--font-head); font-size: clamp(26px, 5vw, 40px); line-height: 1.15; font-weight: 700; text-wrap: balance; }
+.hero-sub { color: var(--hero-muted); max-width: 66ch; }
+.hero-stats { font-weight: 500; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.hero-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; }
+.pill { display: inline-flex; padding: 4px 12px; border-radius: 999px; background: rgba(255,255,255,0.16); font-size: 13px; font-weight: 600; }
+.btn-hero { background: #FFFFFF; color: #0A3A8C; border: 1px solid #FFFFFF; border-radius: 8px; padding: 7px 14px; font: 600 13px var(--font-body); cursor: pointer; }
+.btn-hero.ghost { background: transparent; color: #FFFFFF; border-color: rgba(255,255,255,0.55); }
+
+.shell { display: grid; grid-template-columns: 270px minmax(0, 1fr); gap: 32px; padding-block: 28px 40px; align-items: start; }
+#nav { position: sticky; top: 16px; }
+.nav-list { display: flex; flex-direction: column; gap: 2px; }
+.nav-item { display: flex; align-items: baseline; gap: 10px; padding: 8px 10px; border-radius: 8px; text-decoration: none; color: var(--muted); font-size: 14px; line-height: 1.35; }
+.nav-item:hover { background: var(--blue-soft); color: var(--ink); }
+.nav-item.on { background: var(--blue-soft); color: var(--blue); font-weight: 600; }
+.nav-item .no { font-family: var(--font-head); font-weight: 600; min-width: 2.6ch; font-variant-numeric: tabular-nums; }
+
+.sec-head { display: flex; flex-direction: column; gap: 4px; margin-bottom: 18px; }
+.sec-head h2 { font-family: var(--font-head); font-size: 24px; line-height: 1.2; font-weight: 700; text-wrap: balance; }
+.sec-head p { color: var(--muted); max-width: 64ch; }
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
+.card { display: flex; flex-direction: column; gap: 8px; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; text-decoration: none; min-width: 0; }
+.card:hover { border-color: var(--blue); }
+.badge { align-self: flex-start; font-family: var(--font-head); font-weight: 700; font-size: 13px; color: var(--blue); background: var(--blue-soft); padding: 2px 9px; border-radius: 6px; font-variant-numeric: tabular-nums; }
+.card h3 { font-family: var(--font-head); font-size: 16px; line-height: 1.3; font-weight: 600; text-wrap: balance; }
+.card .desc { color: var(--muted); font-size: 13.5px; flex: 1; }
+.card .meta { font-size: 12.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 8px; font-variant-numeric: tabular-nums; }
+
+.back { display: inline-block; margin-bottom: 14px; color: var(--blue); font-weight: 600; font-size: 14px; text-decoration: none; }
+.back:hover { text-decoration: underline; }
+.list { list-style: none; margin: 0; padding: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; }
+.row { display: grid; grid-template-columns: 56px minmax(0, 1fr) auto; gap: 14px; align-items: start; padding: 14px 16px; }
+.row + .row { border-top: 1px solid var(--line); }
+.ftype { font-family: var(--font-head); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; text-align: center; color: var(--blue); background: var(--blue-soft); border-radius: 6px; padding: 7px 0; }
+.row-main { min-width: 0; }
+.row-title { font-weight: 600; overflow-wrap: anywhere; }
+.row-note { color: var(--muted); font-size: 13.5px; overflow-wrap: anywhere; }
+.row-meta { color: var(--muted); font-size: 12.5px; margin-top: 2px; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.btn, .btn-ghost { font: 600 13.5px var(--font-body); border-radius: 8px; padding: 8px 14px; cursor: pointer; text-decoration: none; display: inline-block; line-height: 1.3; }
+.btn { background: var(--btn-bg); color: var(--btn-ink); border: 1px solid var(--btn-bg); }
+.btn:hover { filter: brightness(1.08); }
+.btn-ghost { background: transparent; color: var(--blue); border: 1px solid var(--line); }
+.btn-ghost:hover { background: var(--blue-soft); }
+.empty { padding: 30px 18px; text-align: center; color: var(--muted); }
+.empty strong { display: block; color: var(--ink); font-family: var(--font-head); font-size: 16px; margin-bottom: 4px; }
+.notice { background: var(--blue-soft); border-radius: 10px; padding: 12px 14px; margin-bottom: 16px; font-size: 14px; }
+.adminbox { background: var(--surface); border: 1px solid var(--blue); border-radius: 10px; padding: 16px; margin-bottom: 16px; display: flex; flex-direction: column; gap: 10px; }
+.adminbox h3 { font-family: var(--font-head); font-size: 16px; }
+.adminbox p { color: var(--muted); font-size: 13.5px; max-width: 72ch; }
+.adminbtns { display: flex; flex-wrap: wrap; gap: 8px; }
+.foot { padding-block: 0 32px; color: var(--muted); font-size: 12.5px; }
+
+@media (max-width: 880px) {
+  .shell { grid-template-columns: minmax(0, 1fr); gap: 18px; padding-top: 18px; }
+  #nav { position: static; margin-inline: calc(-1 * max(16px, env(safe-area-inset-left, 0px))); padding-inline: max(16px, env(safe-area-inset-left, 0px)); overflow-x: auto; }
+  .nav-list { flex-direction: row; gap: 6px; width: max-content; padding-bottom: 6px; }
+  .nav-item { white-space: nowrap; border: 1px solid var(--line); background: var(--surface); padding: 6px 12px; }
+  .logo { width: 72px; height: 72px; border-radius: 14px; }
+  .row { grid-template-columns: 48px minmax(0, 1fr); }
+  .row-actions { grid-column: 1 / -1; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .card, .nav-item, .btn, .btn-ghost { transition: border-color .15s, background-color .15s, filter .15s; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap hero-in">
+    <img class="logo" src="assets/logo.jpg" alt="Logo sekolah" width="96" height="96">
+    <div class="hero-text">
+      <p class="eyebrow">Dashboard DELIMa</p>
+      <h1 id="schoolName">SMA Daerah Batang Padang</h1>
+      <p class="hero-sub" id="subtitle"></p>
+      <p class="hero-stats" id="heroStats"></p>
+      <div class="hero-actions" id="heroActions"></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap shell">
+  <nav id="nav" aria-label="Bahagian DELIMa"></nav>
+  <main id="main"></main>
+</div>
+<footer class="wrap foot" id="foot"></footer>
+
+<script src="config.js"></script>
+<script>
+(function () {
+  var CFG = window.DELIMA || {};
+  var NAME = CFG.schoolName || "SMA Daerah Batang Padang";
+  var SUB = CFG.subtitle || "Sekolah Menengah Agama Daerah Batang Padang, 35500 Bidor, Perak. Rekod, dokumen dan bukti pelaksanaan DELIMa (Digital Educational Learning Initiative Malaysia) di satu tempat.";
+  var BRANCH = CFG.branch || "main";
+
+  var SECTIONS = [
+    { id: "1-1", no: "1.1", title: "Jawatankuasa DELIMa", desc: "Senarai ahli jawatankuasa, pelantikan dan tugas setiap jawatan." },
+    { id: "1-2", no: "1.2", title: "Fail / E-Fail DELIMa (Punca Kuasa KPM/JPN)", short: "Fail DELIMa", desc: "Surat siaran, pekeliling dan garis panduan daripada KPM dan JPN." },
+    { id: "1-3", no: "1.3", title: "Carta Organisasi", desc: "Struktur pengurusan dan peranan pegawai DELIMa sekolah." },
+    { id: "1-4", no: "1.4", title: "Perancangan Strategik", desc: "Matlamat, strategi dan sasaran pelaksanaan DELIMa." },
+    { id: "1-5", no: "1.5", title: "Laporan / E-Laporan Pelaksanaan Aktiviti DELIMa", short: "Laporan aktiviti", desc: "Laporan dan bukti aktiviti DELIMa yang telah dijalankan." },
+    { id: "1-6", no: "1.6", title: "Mesyuarat / Minit Mesyuarat", short: "Minit mesyuarat", desc: "Agenda dan minit mesyuarat jawatankuasa DELIMa." },
+    { id: "1-7", no: "1.7", title: "Program DELIMa dalam Takwim Sekolah", short: "Takwim sekolah", desc: "Program DELIMa yang dirancang dalam takwim tahunan sekolah." },
+    { id: "1-8", no: "1.8", title: "Dashboard (Laman Rasmi Sekolah) #1Sekolah1Sites", short: "#1Sekolah1Sites", desc: "Pautan dan tangkapan skrin laman rasmi sekolah di bawah #1Sekolah1Sites." },
+    { id: "1-9", no: "1.9", title: "Jadual Penggunaan DELIMa", short: "Jadual penggunaan", desc: "Sekurang-kurangnya sebulan sekali bagi setiap guru." },
+    { id: "1-10", no: "1.10", title: "DELIMa dalam Kurikulum", short: "Kurikulum", desc: "Penggunaan DELIMa dalam pengajaran dan pembelajaran mata pelajaran." },
+    { id: "1-11", no: "1.11", title: "DELIMa dalam Kokurikulum", short: "Kokurikulum", desc: "Penggunaan DELIMa dalam kelab, persatuan, sukan dan unit beruniform." },
+    { id: "1-12", no: "1.12", title: "DELIMa dalam HEM", short: "HEM", desc: "Penggunaan DELIMa dalam urusan Hal Ehwal Murid." },
+    { id: "1-13", no: "1.13", title: "Bimbingan dan Kaunseling", short: "Bimbingan & Kaunseling", desc: "Dokumen dan bukti berkaitan perkhidmatan bimbingan dan kaunseling sekolah." }
+  ];
+  var byId = {};
+  SECTIONS.forEach(function (s) { byId[s.id] = s; });
+  var EXT = { pdf: "PDF", doc: "DOC", docx: "DOC", xls: "XLS", xlsx: "XLS", csv: "XLS", ppt: "PPT", pptx: "PPT", png: "IMEJ", jpg: "IMEJ", jpeg: "IMEJ", gif: "IMEJ", webp: "IMEJ", mp4: "VIDEO", webm: "VIDEO", mov: "VIDEO", zip: "ZIP" };
+
+  var S = { files: [], ready: false, err: false, admin: false };
+  try { S.admin = sessionStorage.getItem("delima-admin") === "1"; } catch (e) {}
+
+  function $(s) { return document.querySelector(s); }
+  function h(tag, props) {
+    var e = document.createElement(tag);
+    if (props) Object.keys(props).forEach(function (k) {
+      var v = props[k];
+      if (v === null || v === undefined || v === false) return;
+      if (k === "class") e.className = v;
+      else if (k.indexOf("on") === 0) e.addEventListener(k.slice(2), v);
+      else e.setAttribute(k, v === true ? "" : v);
+    });
+    (function add(list) {
+      list.forEach(function (c) {
+        if (c === null || c === undefined || c === false) return;
+        if (Array.isArray(c)) return add(c);
+        e.append(c.nodeType ? c : document.createTextNode(String(c)));
+      });
+    })(Array.prototype.slice.call(arguments, 2));
+    return e;
+  }
+  function fmtDate(iso) {
+    if (!iso) return "";
+    var d = new Date(String(iso).slice(0, 10) + "T00:00:00");
+    return isNaN(d) ? "" : d.toLocaleDateString("ms-MY", { day: "numeric", month: "short", year: "numeric" });
+  }
+  function fmtSize(n) {
+    if (!n) return "";
+    return n < 1048576 ? Math.max(1, Math.round(n / 1024)) + " KB" : (n / 1048576).toFixed(1) + " MB";
+  }
+  function typeLabel(f) {
+    if (f.kind === "link") return "PAUTAN";
+    return EXT[String(f.ext || "").toLowerCase()] || "FAIL";
+  }
+  function route() {
+    var m = /^#b(\d+-\d+)$/.exec(location.hash);
+    return m && byId[m[1]] ? m[1] : null;
+  }
+  function filesIn(id) {
+    return S.files.filter(function (f) { return f.section === id; }).sort(function (a, b) {
+      var x = String(b.date || "").localeCompare(String(a.date || ""));
+      return x !== 0 ? x : String(a.title || "").localeCompare(String(b.title || ""));
+    });
+  }
+  function lastDate(list) {
+    var m = "";
+    list.forEach(function (f) { if ((f.date || "") > m) m = f.date; });
+    return m;
+  }
+  function repoBase() {
+    if (CFG.repoUrl) return String(CFG.repoUrl).replace(/\/+$/, "");
+    var m = /^([^.]+)\.github\.io$/.exec(location.hostname);
+    var repo = location.pathname.split("/")[1];
+    return m && repo ? "https://github.com/" + m[1] + "/" + repo : "";
+  }
+  function href(f) {
+    if (f.kind === "link") return String(f.url || "").indexOf("https://") === 0 ? f.url : null;
+    return String(f.path || "").split("/").map(encodeURIComponent).join("/");
+  }
+
+  function renderHero() {
+    $("#schoolName").textContent = NAME;
+    $("#subtitle").textContent = SUB;
+    var stats = SECTIONS.length + " bahagian";
+    if (S.ready) {
+      stats += " · " + S.files.length + " fail";
+      var last = lastDate(S.files);
+      if (last) stats += " · Kemas kini " + fmtDate(last);
+    }
+    $("#heroStats").textContent = stats;
+    var box = $("#heroActions");
+    box.replaceChildren(
+      h("span", { class: "pill" }, S.admin ? "Paparan admin" : "Paparan pengunjung"),
+      h("button", { type: "button", class: "btn-hero" + (S.admin ? " ghost" : ""), onclick: toggleAdmin }, S.admin ? "Tutup paparan admin" : "Paparan admin")
+    );
+  }
+  function toggleAdmin() {
+    S.admin = !S.admin;
+    try { sessionStorage.setItem("delima-admin", S.admin ? "1" : "0"); } catch (e) {}
+    render();
+  }
+  function renderNav(cur) {
+    var items = [h("a", { href: "#utama", class: "nav-item" + (cur ? "" : " on"), "aria-current": cur ? null : "page" }, "Utama")];
+    SECTIONS.forEach(function (s) {
+      var on = s.id === cur;
+      items.push(h("a", { href: "#b" + s.id, class: "nav-item" + (on ? " on" : ""), "aria-current": on ? "page" : null, title: s.title },
+        h("span", { class: "no" }, s.no), h("span", null, s.short || s.title)));
+    });
+    $("#nav").replaceChildren(h("div", { class: "nav-list" }, items));
+  }
+  function statusNotice() {
+    if (S.err) return h("p", { class: "notice" }, "Senarai fail tidak dapat dimuatkan. Buka laman ini melalui alamat GitHub Pages, bukan terus daripada fail di komputer, dan semak bahawa langkah “Terbit laman” di tab Actions berjaya.");
+    if (!S.ready) return h("p", { class: "notice" }, "Memuatkan senarai fail…");
+    return null;
+  }
+  function renderHome() {
+    var cards = SECTIONS.map(function (s) {
+      var list = filesIn(s.id);
+      var meta = !S.ready ? " " : list.length === 0 ? "Belum ada fail" : list.length + " fail · Kemas kini " + fmtDate(lastDate(list));
+      return h("a", { class: "card", href: "#b" + s.id },
+        h("span", { class: "badge" }, s.no), h("h3", null, s.title), h("p", { class: "desc" }, s.desc), h("p", { class: "meta" }, meta));
+    });
+    return [
+      h("div", { class: "sec-head" }, h("h2", null, "Semua bahagian"), h("p", null, "Pilih satu bahagian untuk melihat dokumen dan bukti pelaksanaan DELIMa.")),
+      statusNotice(),
+      h("div", { class: "grid" }, cards)
+    ];
+  }
+  function fileRow(f) {
+    var link = href(f);
+    var meta = f.kind === "link" ? fmtDate(f.date) : [fmtDate(f.date), fmtSize(f.size), f.filename].filter(Boolean).join(" · ");
+    return h("li", { class: "row" },
+      h("span", { class: "ftype" }, typeLabel(f)),
+      h("div", { class: "row-main" },
+        h("p", { class: "row-title" }, f.title || f.filename || "Tanpa tajuk"),
+        f.note ? h("p", { class: "row-note" }, f.note) : null,
+        meta ? h("p", { class: "row-meta" }, meta) : null),
+      h("div", { class: "row-actions" }, link ? h("a", { class: "btn-ghost", href: link, target: "_blank", rel: "noopener noreferrer" }, f.kind === "link" ? "Buka pautan" : "Buka / muat turun") : null));
+  }
+  function adminBox(sec) {
+    var base = repoBase();
+    if (!base) return h("p", { class: "notice" }, "Untuk memaparkan butang pengurusan fail, isi repoUrl dalam fail config.js.");
+    var folder = "fail/" + sec.id;
+    var hasLink = filesIn(sec.id).some(function (f) { return f.kind === "link"; });
+    var linkHref = hasLink ? base + "/edit/" + BRANCH + "/" + folder + "/pautan.txt" : base + "/new/" + BRANCH + "/" + folder + "?filename=pautan.txt";
+    function a(cls, url, text) { return h("a", { class: cls, href: url, target: "_blank", rel: "noopener noreferrer" }, text); }
+    return h("div", { class: "adminbox" },
+      h("h3", null, "Urus fail bahagian " + sec.no),
+      h("p", null, "Tekan “Tambah / kemas kini fail”, seret fail ke halaman GitHub, kemudian tekan Commit changes. Senarai di laman ini dikemas kini dalam 1 hingga 2 minit. Fail dengan nama yang sama akan menggantikan versi lama. Anda perlu log masuk GitHub dengan akaun yang diberi akses."),
+      h("div", { class: "adminbtns" },
+        a("btn", base + "/upload/" + BRANCH + "/" + folder, "Tambah / kemas kini fail"),
+        a("btn-ghost", linkHref, hasLink ? "Edit pautan (pautan.txt)" : "Tambah pautan Google Drive"),
+        a("btn-ghost", base + "/tree/" + BRANCH + "/" + folder, "Lihat folder di GitHub")),
+      h("p", null, "Format pautan, satu baris setiap pautan: Tajuk | https://alamat-pautan | catatan (pilihan)"));
+  }
+  function renderSection(id) {
+    var s = byId[id];
+    var list = filesIn(id);
+    var body;
+    if (S.err || !S.ready) body = statusNotice();
+    else if (list.length === 0) body = h("div", { class: "list" }, h("div", { class: "empty" }, h("strong", null, "Belum ada fail dalam bahagian ini"), "Dokumen akan dipaparkan di sini selepas dimuat naik oleh guru admin."));
+    else body = h("ul", { class: "list" }, list.map(fileRow));
+    return [
+      h("a", { class: "back", href: "#utama" }, "← Semua bahagian"),
+      h("div", { class: "sec-head" }, h("span", { class: "badge" }, s.no), h("h2", null, s.title), h("p", null, s.desc)),
+      S.admin ? adminBox(s) : null,
+      body
+    ];
+  }
+  function render() {
+    var cur = route();
+    renderHero();
+    renderNav(cur);
+    $("#main").replaceChildren.apply($("#main"), (cur ? renderSection(cur) : renderHome()).filter(Boolean));
+    $("#foot").textContent = "Dashboard DELIMa · " + NAME + " · " + new Date().getFullYear();
+    document.title = cur ? byId[cur].no + " " + byId[cur].title + " · Dashboard DELIMa" : "Dashboard DELIMa";
+  }
+
+  window.addEventListener("hashchange", function () { render(); window.scrollTo(0, 0); });
+  render();
+  fetch("data/files.json", { cache: "no-store" })
+    .then(function (r) { if (!r.ok) throw new Error("http"); return r.json(); })
+    .then(function (data) { S.files = Array.isArray(data) ? data : []; S.ready = true; render(); })
+    .catch(function () { S.err = true; render(); });
+})();
+</script>
+</body>
+</html>
